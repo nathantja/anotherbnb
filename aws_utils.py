@@ -1,9 +1,14 @@
 import boto3
 
 BUCKET_NAME = "r33anotherbnb"
+AWS_REGION = "us-west-1"
+
+
+
+
+
 
 s3 = boto3.resource('s3')
-
 
 # s3_client = boto3.client(
 #     's3',
