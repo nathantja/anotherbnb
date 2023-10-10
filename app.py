@@ -7,7 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 
 # from forms import
-# from models import
+from models import db, connect_db, Message, User, Reservation, Listing, Image
 
 load_dotenv()
 
@@ -18,8 +18,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-# app.config['ACCESS_KEY'] = os.environ['ACCESS_KEY']
-# app.config['SECRET_ACCESS_KEY'] = os.environ['SECRET_ACCESS_KEY']
+app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 toolbar = DebugToolbarExtension(app)
 
@@ -38,10 +37,10 @@ def add_user_to_g():
         g.user = None
 
 
-@app.before_request
-def add_CSRF_to_g():
-    """Adds a global property to access the CSRFProtectForm"""
+# @app.before_request
+# def add_CSRF_to_g():
+#     """Adds a global property to access the CSRFProtectForm"""
 
-    g.csrf_form = CSRFProtectForm()
+#     g.csrf_form = CSRFProtectForm()
 
 

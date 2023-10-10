@@ -17,6 +17,6 @@ s3 = boto3.resource('s3')
 # )
 
 # Upload a new file
-with open('test.jpg', 'rb') as data:
-    s3.Bucket(f"{BUCKET_NAME}").put_object(Key='test.jpg', Body=data)
+# with open('temp_testimage.jpg', 'rb') as data:
+#     s3.Bucket(f"{BUCKET_NAME}").put_object(Key='temp_testimage', Body=data)
 

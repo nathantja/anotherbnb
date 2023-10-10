@@ -6,4 +6,4 @@ flask-debugtoolbar
 flask-wtf
 ipython
 boto3
-python-dotenv
+dotenv
