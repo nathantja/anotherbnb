@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1>LISTING</h1>
+
+<h2>{{ listing.title }}</h2>
+<h3>Host: {{ listing.user.username }}</h3>
+<h4>Description: {{ listing.description }}</h4>
+<h5>Status: {{ listing.status }}</h5>
+<a href="/listings/{{ listing.id }}/reserve" class="btn btn-primary">Request Reservation</a>
+
+{% for image in listing.images %}
+<img src="{{ image.url }}" alt="{{ image.original_filename }}">
+
+{% endfor %}
+
+
+{% endblock %}

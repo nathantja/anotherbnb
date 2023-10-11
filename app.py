@@ -6,11 +6,12 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import Unauthorized
 from werkzeug.utils import secure_filename
+import uuid
 
 from forms import UserAddForm, CSRFProtectForm, LoginForm, ListingAddForm
-from models import db, connect_db, User, Listing
-# Reservation, Image, Message
-from utils import uploadToS3
+from models import db, connect_db, User, Listing, Image
+# Reservation, Message
+from utils import uploadToS3, BUCKET_IMG_BASE_URL
 
 load_dotenv()
 
@@ -139,7 +140,7 @@ def logout():
         do_logout()
 
         flash("Successfully Logged out.", "success")
-        return redirect("/login")
+        return redirect("/")
 
     else:
         raise Unauthorized()
@@ -164,6 +165,18 @@ def listings():
         return render_template("listings-guest.html", listings=listings)
 
 
+@app.get('/listings/<int:id>')
+def listing_id(id):
+    """Show listing based on URL parameter. Requires sign-in."""
+
+    if not g.user:
+        flash("Signup or login to view listing", "warning")
+        return redirect("/")
+
+    listing = Listing.query.get_or_404(id)
+    return render_template("listing.html", listing=listing)
+
+
 @app.route('/listings/new', methods=['GET', 'POST'])
 def new_listing():
     """Display new listing form or process the form.
@@ -175,10 +188,6 @@ def new_listing():
     form = ListingAddForm()
 
     if form.validate_on_submit():
-        # TODO: check file extension before upload
-
-
-
         listing = Listing(
             user_id=g.user.id,
             title=form.title.data,
@@ -188,23 +197,24 @@ def new_listing():
         db.session.add(listing)
         db.session.commit()
 
-        print(listing.id)
-
-
         for image in form.images.data:
-
-
             original_filename = secure_filename(image.filename)
-            unique_filename =
+            extension = original_filename.rsplit(".", 1)[1].lower()
+            uuid_filename = uuid.uuid4().hex + "." + extension
+            uploadToS3(image, uuid_filename)
 
-            uploadToS3(image, "pickle.png")
+            db_image = Image(
+                listing_id=listing.id,
+                original_filename=original_filename,
+                filename=uuid_filename,
+                url=f"{BUCKET_IMG_BASE_URL}/{uuid_filename}"
+            )
 
-
-
-
+            db.session.add(db_image)
+            db.session.commit()
 
         flash("Successfully added listing", "success")
-        return redirect("/listings")
+        return redirect(f"/listings/{listing.id}")
 
     else:
         return render_template("listings-new.html", form=form)

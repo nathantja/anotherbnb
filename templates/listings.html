@@ -13,7 +13,7 @@
 <img src="{{ listing.images[0].url }}" alt="{{ listing.images[0].original_filename }}">
 {% endif %}
 
-<h2>{{ listing.title }}</h2>
+<h2><a href="/listings/{{ listing.id }}">{{ listing.title }}</a></h2>
 <h3>Host: {{ listing.user.username }}</h3>
 <h4>Description: {{ listing.description }}</h4>
 <h5>Status: {{ listing.status }}</h5>
