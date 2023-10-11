@@ -11,6 +11,19 @@
 
 <body>
 
+
+  <a href="/">Home</a>
+  <a href="/signup">Signup</a>
+  <a href="/login">Login</a>
+
+  <!-- LOGOUT -->
+<form action="/logout" method="POST">
+  {{ g.csrf_form.hidden_tag() }}
+  <button class="btn btn-danger">Logout</button>
+</form>
+  <!-- END LOGOUT -->
+
+
   <div class="container">
     {% for category, message in get_flashed_messages(with_categories=True) %}
     <div class="alert alert-{{ category }}">{{ message }}</div>

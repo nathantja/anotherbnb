@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1>LISTINGS (GUEST)</h1>
+
+<!-- LISTINGS OVERVIEW -->
+{% for listing in listings %}
+
+{% if listing.images %}
+<img src="{{ listing.images[0].url }}" alt="{{ listing.images[0].original_filename }}">
+{% endif %}
+
+<h2>{{ listing.title }}</h2>
+<h3>Host: {{ listing.user.username }}</h3>
+<h4>Description: {{ listing.description }}</h4>
+<h5>Status: {{ listing.status }}</h5>
+{% endfor %}
+<!-- END LISTINGS -->
+
+
+
+{% endblock %}

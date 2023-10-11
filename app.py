@@ -6,9 +6,9 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import Unauthorized
 
-from forms import UserAddForm, CSRFProtectForm, LoginForm
-from models import db, connect_db, User
-# Reservation, Listing, Image, Message
+from forms import UserAddForm, CSRFProtectForm, LoginForm, ListingAddForm
+from models import db, connect_db, User, Listing
+# Reservation, Image, Message
 
 load_dotenv()
 
@@ -45,16 +45,16 @@ def add_CSRF_to_g():
 
     g.csrf_form = CSRFProtectForm()
 
+
 @app.after_request
 def add_header(response):
     """Add non-caching headers on every request."""
 
-    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
     response.cache_control.no_store = True
     return response
 
 
-### User signup/login/logout ###################################################
+### User Signup/login/Logout ###################################################
 
 def do_login(user):
     """Log in user."""
@@ -92,16 +92,16 @@ def signup():
             db.session.commit()
 
         except IntegrityError:
-            flash("Username already taken", 'danger')
-            return render_template('users/signup.html', form=form)
+            flash("Username already taken", "danger")
+            return render_template("users/signup.html", form=form)
 
         do_login(user)
 
-        flash("Successfully logged in", 'success')
+        flash("Successfully logged in", "success")
         return redirect("/")
 
     else:
-        return render_template('users/signup.html', form=form)
+        return render_template("users/signup.html", form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -124,9 +124,9 @@ def login():
             flash(f"Welcome back, {user.username}!", "success")
             return redirect("/")
 
-        flash("Invalid credentials.", 'danger')
+        flash("Invalid credentials.", "danger")
 
-    return render_template('users/login.html', form=form)
+    return render_template("users/login.html", form=form)
 
 
 @app.post('/logout')
@@ -136,8 +136,66 @@ def logout():
     if g.csrf_form.validate_on_submit():
         do_logout()
 
-        flash("Successfully Logged out.")
+        flash("Successfully Logged out.", "success")
         return redirect("/login")
 
     else:
         raise Unauthorized()
+
+
+### Listings ###################################################################
+
+@app.get('/listings')
+def listings():
+    """Show listings.
+
+    Guest/Anon: only show listings
+    Logged In: show UI to interact with listings
+    """
+
+    listings = Listing.query.all()
+
+    if g.user:
+        return render_template("listings.html", listings=listings)
+
+    else:
+        return render_template("listings-guest.html", listings=listings)
+
+
+@app.route('/listings/new', methods=['GET', 'POST'])
+def new_listing():
+    """Display new listing form or process the form.
+
+    Add new listing to database, then redirect to listings.
+    If form not valid, present form.
+    """
+
+    form = ListingAddForm()
+
+    if form.validate_on_submit():
+        listing = Listing(
+            user_id=g.user.id,
+            title=form.title.data,
+            description=form.description.data,
+            status=form.status.data
+        )
+
+        print("listing.id", listing.id)
+
+        db.session.add(listing)
+        db.session.commit()
+
+        flash("Successfully added listing", "success")
+        return redirect("/listings")
+
+    else:
+        return render_template("listings-new.html", form=form)
+
+
+### Homepage (Redirect) ########################################################
+
+@app.get('/')
+def homepage():
+    """Redirect to /listings"""
+
+    return redirect("/listings")

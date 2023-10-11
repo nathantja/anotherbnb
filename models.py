@@ -3,7 +3,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from datetime import datetime
-from aws_utils import BUCKET_NAME, AWS_REGION
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -164,7 +163,7 @@ class Listing(db.Model):
     )
 
     description = db.Column(
-        db.String(30),
+        db.String(1000),
         nullable=False,
         default=""
     )
@@ -174,6 +173,10 @@ class Listing(db.Model):
         nullable=False,
         default="available"
     )
+
+    # RELATIONSHIP
+    images = db.relationship('Image', backref='listing')
+
 
 
 ### IMAGES #####################################################################
@@ -205,17 +208,11 @@ class Image(db.Model):
         nullable=False
     )
 
-    bucket = db.Column(
-        db.String(63),
-        nullable=False,
-        default=BUCKET_NAME
+    url = db.Column(
+        db.String(1000),
+        nullable=False
     )
 
-    region = db.Column(
-        db.String(63),
-        nullable=False,
-        default=AWS_REGION
-    )
 
 ### RESERVATIONS ###############################################################
 
