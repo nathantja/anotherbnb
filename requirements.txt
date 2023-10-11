@@ -1,9 +1,9 @@
-flask
-flask-bcrypt
+python-dotenv
+Flask
+Flask-Bcrypt
 psycopg2-binary
-flask-sqlalchemy
-flask-debugtoolbar
-flask-wtf
+Flask-SQLAlchemy
+Flask-DebugToolbar
+Flask-WTF
 ipython
 boto3
-dotenv
