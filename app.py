@@ -5,8 +5,7 @@ from flask import Flask, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 # from werkzeug.exceptions import Unauthorized
 
-
-# from forms import
+from forms import UserAddForm, LoginForm, CSRFProtectForm
 from models import db, connect_db, Message, User, Reservation, Listing, Image
 
 load_dotenv()
@@ -37,10 +36,24 @@ def add_user_to_g():
         g.user = None
 
 
-# @app.before_request
-# def add_CSRF_to_g():
-#     """Adds a global property to access the CSRFProtectForm"""
+@app.before_request
+def add_CSRF_to_g():
+    """Adds a global property to access the CSRFProtectForm"""
 
-#     g.csrf_form = CSRFProtectForm()
+    g.csrf_form = CSRFProtectForm()
+
+
+def do_login(user):
+    """Log in user."""
+
+    session[CURR_USER_KEY] = user.id
+
+
+def do_logout():
+    """Log out user."""
+
+    if CURR_USER_KEY in session:
+        del session[CURR_USER_KEY]
+
 
 
