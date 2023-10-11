@@ -1,4 +1,4 @@
-"""SQLAlchemy models for Anotherbnb. """
+"""SQLAlchemy models for Anotherbnb."""
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
