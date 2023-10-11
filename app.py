@@ -1,8 +1,9 @@
 import os
 from dotenv import load_dotenv
 
-from flask import Flask, session, g
+from flask import Flask, session, g, flash, redirect, render_template
 from flask_debugtoolbar import DebugToolbarExtension
+from sqlalchemy.exc import IntegrityError
 # from werkzeug.exceptions import Unauthorized
 
 from forms import UserAddForm, LoginForm, CSRFProtectForm
@@ -57,3 +58,35 @@ def do_logout():
 
 
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    """Either display the form or process the form.
+
+    Add new user to database, then redirect to homepage.
+    If form not valid, present form.
+    If username not unique, flash message.
+    """
+
+    do_logout()
+
+    form = UserAddForm()
+
+    if form.validate_on_submit():
+        try:
+            user = User.signup(
+                username=form.username.data,
+                email=form.email.data,
+                password=form.password.data,
+            )
+            db.session.commit()
+
+        except IntegrityError:
+            flash("Username already taken", 'danger')
+            return render_template('users/signup.html', form=form)
+
+        do_login(user)
+
+        return redirect("/")
+
+    else:
+        return render_template('users/signup.html', form=form)

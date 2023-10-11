@@ -3,12 +3,11 @@
 Wishlist:
 - write more tests
 - map features
-
-
+- library for authentication
 
 MODELS
-- users table - firstname, lastname, bio
-- reservations table -  no check to see if reservations overlap
+- users table additions - firstname, lastname, bio
+- reservations table - check to see if reservations overlap
 
 AWS
 - presign images in the future, currently accessible if you have any filename
