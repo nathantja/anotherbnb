@@ -4,11 +4,21 @@ BUCKET_NAME = "r33anotherbnb"
 AWS_REGION = "us-west-1"
 
 
-
-
-
-
 s3 = boto3.resource('s3')
+
+
+
+def uploadToS3(file, filename):
+    """Upload file to AWS S3 bucket."""
+
+    s3.Bucket(BUCKET_NAME).upload_fileobj(file, filename)
+
+
+
+
+
+
+
 
 # s3_client = boto3.client(
 #     's3',

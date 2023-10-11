@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 
-from wtforms import StringField, PasswordField, TextAreaField, SelectField
+from wtforms import StringField, PasswordField, TextAreaField, SelectField, MultipleFileField
 from wtforms.validators import InputRequired, Length, Email, Optional
+from flask_wtf.file import FileAllowed
 
 
 class UserAddForm(FlaskForm):
@@ -52,6 +53,12 @@ class ListingAddForm(FlaskForm):
     description = TextAreaField(
         'Description',
         validators=[Optional(), Length(max=1000)])
+
+    images = MultipleFileField(
+        'Upload images',
+        validators=[InputRequired(),
+                    FileAllowed(['png', 'jpg', 'jpeg'], 'Only png, jpg, & jpeg supported.')]
+    )
 
     status = SelectField(
         'Status',

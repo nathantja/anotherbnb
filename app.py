@@ -5,10 +5,12 @@ from flask import Flask, session, g, flash, redirect, render_template
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import Unauthorized
+from werkzeug.utils import secure_filename
 
 from forms import UserAddForm, CSRFProtectForm, LoginForm, ListingAddForm
 from models import db, connect_db, User, Listing
 # Reservation, Image, Message
+from utils import uploadToS3
 
 load_dotenv()
 
@@ -173,17 +175,33 @@ def new_listing():
     form = ListingAddForm()
 
     if form.validate_on_submit():
+        # TODO: check file extension before upload
+
+
+
         listing = Listing(
             user_id=g.user.id,
             title=form.title.data,
             description=form.description.data,
             status=form.status.data
         )
-
-        print("listing.id", listing.id)
-
         db.session.add(listing)
         db.session.commit()
+
+        print(listing.id)
+
+
+        for image in form.images.data:
+
+
+            original_filename = secure_filename(image.filename)
+            unique_filename =
+
+            uploadToS3(image, "pickle.png")
+
+
+
+
 
         flash("Successfully added listing", "success")
         return redirect("/listings")
