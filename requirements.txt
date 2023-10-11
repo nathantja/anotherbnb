@@ -1,9 +1,0 @@
-python-dotenv
-Flask
-Flask-Bcrypt
-psycopg2-binary
-Flask-SQLAlchemy
-Flask-DebugToolbar
-Flask-WTF
-ipython
-boto3
