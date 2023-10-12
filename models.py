@@ -23,6 +23,7 @@ def connect_db(app):
 # users 1:M reservations M:1 listings
 # users 1:M messages M:1 users
 # listings 1:M images
+# reservations M:1 listings
 
 ### MESSAGES ###################################################################
 
@@ -284,3 +285,6 @@ class Reservation(db.Model):
         nullable=False,
         default="requested"
     )
+
+    # RELATIONSHIP
+    listing = db.relationship('Listing', backref='reservations')

@@ -1,30 +1,28 @@
 {% extends 'base.html' %}
-
+{% from 'macros.html' import listing_details_only %}
 
 {% block content %}
-<h1>LISTINGS (GUEST)</h1>
+<div class="row justify-content-md-center">
+  <div class="col-md-7 col-lg-5">
+    <h1>LISTINGS (GUEST)</h1>
 
-<!-- LISTINGS OVERVIEW -->
-{% for listing in listings %}
+    <!-- LISTINGS OVERVIEW -->
+    {% for listing in listings %}
 
-<div>
-{% if listing.images %}
-<div>
-<img class="listing-thumbnail-img" src="{{ listing.images[0].url }}" alt="{{ listing.images[0].original_filename }}">
+    <div>
+      {% if listing.images %}
+      <div>
+        <img class="listing-thumbnail-img" src="{{ listing.images[0].url }}"
+          alt="{{ listing.images[0].original_filename }}">
+      </div>
+      {% endif %}
+
+      <h2>{{ listing.title }}</h2>
+      {{ listing_details_only(listing) }}
+    </div>
+    {% endfor %}
+    <!-- END LISTINGS -->
+  </div>
 </div>
-{% endif %}
-
-<h2>{{ listing.title }}</h2>
-<p><b>Host:</b> {{ listing.user.username }}</p>
-<p><b>Area:</b> {{ listing.sq_ft}} ft²</p>
-<p><b>Max Number of Guests:</b> {{ listing.max_guests }}</p>
-<p><b>Hourly Rate:</b> ${{ listing.hourly_rate }}</p>
-<p><b>Description:</b> {{ listing.description }}</p>
-<p><b>Status:</b> {{ listing.status }}</p>
-</div>
-{% endfor %}
-<!-- END LISTINGS -->
-
-
 
 {% endblock %}

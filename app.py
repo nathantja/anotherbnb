@@ -145,7 +145,7 @@ def logout():
     if g.csrf_form.validate_on_submit():
         do_logout()
 
-        flash("Successfully Logged out.", "success")
+        flash("Successfully logged out", "success")
         return redirect("/")
 
     else:
@@ -239,7 +239,7 @@ def new_listing():
 def request_listing_reservation(id):
     """Display reservation form or process the request.
 
-    Add new reservation to database, then redirect to ___FIXME:____.
+    Add new reservation to database, then redirect to user's reservations.
     If form not valid, present form.
     """
 
@@ -274,12 +274,26 @@ def request_listing_reservation(id):
         db.session.commit()
 
         flash("Successfully requested", "success")
-        return redirect(f"/listings/{listing.id}")
+        return redirect(f"/reservations/me")
 
     else:
-        return render_template("listing-reservation.html",
+        return render_template("listing-reserve.html",
                                form=form,
                                listing=listing)
+
+
+### Reservations ###############################################################
+
+@app.get('/reservations/me')
+def my_reservations():
+
+    if not g.user:
+        flash("Signup or login to see reservations", "warning")
+        return redirect("/")
+
+    reservations = Reservation.query.filter(Reservation.user_id==g.user.id).all()
+
+    return render_template("reservations-me.html", reservations=reservations)
 
 
 
