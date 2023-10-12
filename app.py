@@ -286,15 +286,71 @@ def request_listing_reservation(id):
 
 @app.get('/reservations/me')
 def my_reservations():
+    """Display user's reservations."""
 
     if not g.user:
         flash("Signup or login to see reservations", "warning")
         return redirect("/")
 
-    reservations = Reservation.query.filter(Reservation.user_id==g.user.id).all()
+    reservations = Reservation.query.filter(
+        Reservation.user_id == g.user.id).all()
 
     return render_template("reservations-me.html", reservations=reservations)
 
+
+@app.get('/reservations/manage')
+def manage_reservations():
+    """Portal to manage reservation requests from other users."""
+
+    if not g.user:
+        flash("Signup or login to access.", "warning")
+        return redirect("/")
+
+    user_listings = Listing.query.filter(Listing.user_id == g.user.id).all()
+    user_listings_ids = [listing.id for listing in user_listings]
+
+    reservations = (Reservation
+                    .query
+                    .filter(Reservation.listing_id.in_(user_listings_ids))
+                    .all())
+
+    return render_template("reservations-manage.html", reservations=reservations)
+
+
+@app.post('/reservations/<int:id>/approve')
+def approve_reservation(id):
+    """Set status for reservation to 'approved'."""
+
+    if not g.user or not g.csrf_form.validate_on_submit():
+        raise Unauthorized()
+
+    reservation = Reservation.query.get_or_404(id)
+
+    if g.user.id != reservation.listing.user_id:
+        raise Unauthorized()
+
+    reservation.status = 'approved'
+    db.session.commit()
+
+    return redirect("/reservations/manage")
+
+
+@app.post('/reservations/<int:id>/approve')
+def deny_reservation(id):
+    """Set status for reservation to 'denied'."""
+
+    if not g.user or not g.csrf_form.validate_on_submit():
+        raise Unauthorized()
+
+    reservation = Reservation.query.get_or_404(id)
+
+    if g.user.id != reservation.listing.user_id:
+        raise Unauthorized()
+
+    reservation.status = 'denied'
+    db.session.commit()
+
+    return redirect("/reservations/manage")
 
 
 ### Homepage (Redirect) ########################################################

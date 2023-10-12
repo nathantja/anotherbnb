@@ -7,18 +7,23 @@
     <h1>Reserve '{{ listing.title }}'</h1>
 
 
-    <form method="POST" id="user_form" enctype="multipart/form-data" class="reservation-form">
+    <form method="POST" id="user_form" enctype="multipart/form-data" class="reserve-form">
       {{ form.hidden_tag() }}
 
       {% for field in form if field.widget.input_type != 'hidden' %}
-      {% for error in field.errors %}
-      <span class="text-danger">{{ error }}</span>
-      {% endfor %}
-      <b>{{ field.label.text }}</b>
-      {{ field(class="form-control") }}
-      {% endfor %}
+      <div class="reserve-inputs">
+        <b>{{ field.label.text }}</b>
+        {% for error in field.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        {{ field(class="form-control") }}
+        {% endfor %}
+      </div>
 
-      <button class="btn btn-primary reservation-button">Request</button>
+      <div class="reserve-buttons">
+        <button class="btn btn-primary">Request</button>
+        <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
+      </div>
     </form>
 
     <div>

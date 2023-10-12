@@ -1,18 +1,20 @@
-
 .listing-card {
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin: 25px;
 }
 
 .listing-images {
   max-width: 150px;
 }
 
-.reservation-form {
+.reserve-form {
   margin-top: 50px;
-  margin-bottom: 50px;
 }
 
-.reservation-button {
+.reserve-buttons {
   margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.reserve-inputs {
+  margin-top: px;
 }

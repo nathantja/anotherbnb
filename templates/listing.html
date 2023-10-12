@@ -9,7 +9,8 @@
     <h1>{{ listing.title }}</h1>
     {{ listing_details_only(listing) }}
 
-    <a href="/listings/{{ listing.id }}/reserve" class="btn btn-primary">Request Reservation</a>
+    <a href="/listings/{{ listing.id }}/reserve" class="btn btn-primary">Reserve</a>
+    <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
 
 
     <div>

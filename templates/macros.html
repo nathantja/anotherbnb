@@ -4,12 +4,12 @@
 <p><b>Max Number of Guests:</b> {{ listing.max_guests }}</p>
 <p><b>Hourly Rate:</b> ${{ listing.hourly_rate }}</p>
 <p><b>Description:</b> {{ listing.description }}</p>
-<p><b>Status:</b> {{ listing.status }}</p>
+<p><b>Status:</b> {{ listing.status.capitalize() }}</p>
 {% endmacro %}
 
 
 {% macro reservation_card(reservation) %}
-<div class="card reservation-card-list" style="width: 25rem;">
+<div class="card" style="width: 25rem;">
   <div class="card-body">
     <h5 class="card-title">{{ reservation.listing.title }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">Host: {{ reservation.listing.user.username }}</h6>
@@ -18,6 +18,34 @@
     <p class="card-text"><b>Start Time:</b> {{ reservation.start_time }}</p>
     <p class="card-text"><b>Date:</b> {{ reservation.start_date }}</p>
   </div>
+</div>
+{% endmacro %}
+
+
+{% macro reservation_approval_card(reservation) %}
+<div class="card" style="width: 25rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{ reservation.user.username }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Listing: {{ reservation.listing.title }}</h6>
+    <p class="card-text"><b>Hours:</b> {{ reservation.hours }}</p>
+    <p class="card-text"><b>Guests:</b> {{ reservation.guests }}</p>
+    <p class="card-text"><b>Start Time:</b> {{ reservation.start_time }}</p>
+    <p class="card-text"><b>Date:</b> {{ reservation.start_date }}</p>
+
+    {% if reservation.status != 'requested'%}
+    <p class="card-text"><b>Status:</b> {{ reservation.status.capitalize() }}</p>
+    {% endif %}
+  </div>
+
+  {% if reservation.status == 'requested'%}
+  <div class="card-body">
+    <form method="POST">
+      {{ g.csrf_form.hidden_tag() }}
+      <button formaction="/reservations/{{ reservation.id }}/approve" class="btn btn-success">Approve</button>
+      <button formaction="/reservations/{{ reservation.id }}/deny" class="btn btn-danger">Deny</button>
+    </form>
+  </div>
+  {% endif %}
 </div>
 {% endmacro %}
 

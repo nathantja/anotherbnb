@@ -18,12 +18,13 @@ def connect_db(app):
     db.init_app(app)
 
 
-# Table Relationships
+### Table Relationships
 # users 1:M listings
 # users 1:M reservations M:1 listings
 # users 1:M messages M:1 users
 # listings 1:M images
 # reservations M:1 listings
+# reservations M:1 users
 
 ### MESSAGES ###################################################################
 
@@ -286,5 +287,6 @@ class Reservation(db.Model):
         default="requested"
     )
 
-    # RELATIONSHIP
+    # RELATIONSHIPS
     listing = db.relationship('Listing', backref='reservations')
+    user = db.relationship('User')
