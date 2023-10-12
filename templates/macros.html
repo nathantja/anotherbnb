@@ -9,13 +9,37 @@
 
 
 {% macro reservation_card(reservation) %}
-<div class="card" style="width: 18rem;">
+<div class="card reservation-card-list" style="width: 25rem;">
   <div class="card-body">
     <h5 class="card-title">{{ reservation.listing.title }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">Host: {{ reservation.listing.user.username }}</h6>
     <p class="card-text"><b>Hours:</b> {{ reservation.hours }}</p>
+    <p class="card-text"><b>Guests:</b> {{ reservation.guests }}</p>
     <p class="card-text"><b>Start Time:</b> {{ reservation.start_time }}</p>
     <p class="card-text"><b>Date:</b> {{ reservation.start_date }}</p>
   </div>
+</div>
+{% endmacro %}
+
+
+{% macro listing_card(listing) %}
+<div class="card listing-card" style="width: 24rem;">
+  <img src="{{ listing.images[0].url }}" class="card-img-top" alt="{{ listing.images[0].original_filename }}">
+  <div class="card-body">
+    <h5 class="card-title">{{ listing.title }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Host: {{ listing.user.username }}</h6>
+    <p class="card-text"><b>Description:</b> {{ listing.description }}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><b>Area:</b> {{ listing.sq_ft}} ft²</li>
+    <li class="list-group-item"><b>Max Number of Guests:</b> {{ listing.max_guests }}</li>
+    <li class="list-group-item"><b>Hourly Rate:</b> ${{ listing.hourly_rate }}</li>
+  </ul>
+  {% if g.user %}
+  <div class="card-body">
+    <a href="/listings/{{ listing.id }}" class="card-link">View Details</a>
+    <a href="/listings/{{ listing.id }}/reserve" class="card-link">Reserve</a>
+  </div>
+  {% endif %}
 </div>
 {% endmacro %}

@@ -1,25 +1,15 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import listing_details_only %}
+{% from 'macros.html' import listing_card %}
 
 {% block content %}
 <div class="row justify-content-md-center">
   <div class="col-md-7 col-lg-5">
     <h1>LISTINGS (LOGGED IN)</h1>
+    <a href="/listings/new" class="btn btn-primary">Add Listing</a>
 
     <!-- LISTINGS OVERVIEW -->
     {% for listing in listings %}
-
-    <div>
-      {% if listing.images %}
-      <div>
-        <img class="listing-thumbnail-img" src="{{ listing.images[0].url }}"
-          alt="{{ listing.images[0].original_filename }}">
-      </div>
-      {% endif %}
-
-      <h2><a href="/listings/{{ listing.id }}">{{ listing.title }}</a></h2>
-      {{ listing_details_only(listing) }}
-    </div>
+    {{ listing_card(listing) }}
     {% endfor %}
     <!-- END LISTINGS -->
   </div>

@@ -1,6 +1,7 @@
 
-.listing-thumbnail-img {
-  max-width: 150px;
+.listing-card {
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 .listing-images {

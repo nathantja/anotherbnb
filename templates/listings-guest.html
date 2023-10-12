@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import listing_details_only %}
+{% from 'macros.html' import listing_card %}
 
 {% block content %}
 <div class="row justify-content-md-center">
@@ -8,18 +8,7 @@
 
     <!-- LISTINGS OVERVIEW -->
     {% for listing in listings %}
-
-    <div>
-      {% if listing.images %}
-      <div>
-        <img class="listing-thumbnail-img" src="{{ listing.images[0].url }}"
-          alt="{{ listing.images[0].original_filename }}">
-      </div>
-      {% endif %}
-
-      <h2>{{ listing.title }}</h2>
-      {{ listing_details_only(listing) }}
-    </div>
+    {{ listing_card(listing) }}
     {% endfor %}
     <!-- END LISTINGS -->
   </div>

@@ -251,7 +251,7 @@ def request_listing_reservation(id):
 
     if listing.user_id == g.user.id:
         flash("You cannot make a reservation for your own listing", "warning")
-        return redirect("/")
+        return redirect(f"/listings/{id}")
 
     form = ReservationAddForm()
 
