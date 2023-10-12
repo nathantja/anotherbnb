@@ -56,7 +56,7 @@ class Message(db.Model):
     timestamp = db.Column(
         db.DateTime,
         nullable=False,
-        default=datetime.utcnow,
+        default=datetime.utcnow()
     )
 
 
@@ -258,7 +258,12 @@ class Reservation(db.Model):
     )
 
     start_date = db.Column(
-        db.DateTime,
+        db.Date,
+        nullable=False
+    )
+
+    start_time = db.Column(
+        db.Time,
         nullable=False
     )
 

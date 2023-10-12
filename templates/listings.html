@@ -18,9 +18,9 @@
 
 <h2><a href="/listings/{{ listing.id }}">{{ listing.title }}</a></h2>
 <p><b>Host:</b> {{ listing.user.username }}</p>
-<p><b>Area (Square Ft):</b> {{ listing.sq_ft}}</p>
+<p><b>Area:</b> {{ listing.sq_ft}} ft²</p>
 <p><b>Max Number of Guests:</b> {{ listing.max_guests }}</p>
-<p><b>Hourly Rate:</b> {{ listing.hourly_rate }}</p>
+<p><b>Hourly Rate:</b> ${{ listing.hourly_rate }}</p>
 <p><b>Description:</b> {{ listing.description }}</p>
 <p><b>Status:</b> {{ listing.status }}</p>
 </div>

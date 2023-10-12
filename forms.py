@@ -7,7 +7,9 @@ from wtforms import (
     SelectField,
     MultipleFileField,
     IntegerField,
-    DecimalField
+    DecimalField,
+    DateField,
+    TimeField,
     )
 
 from wtforms.validators import (
@@ -97,9 +99,25 @@ class ListingAddForm(FlaskForm):
     )
 
 
-
 class ReservationAddForm(FlaskForm):
     """Request a reservation for a specific listing."""
 
+    start_date = DateField(
+        "Start Date",
+        validators=[InputRequired()]
+    )
 
+    start_time = TimeField(
+        "Start Time",
+        validators=[InputRequired()]
+    )
 
+    hours = IntegerField(
+        'Hours',
+        validators=[InputRequired(), NumberRange(min=1, message="Mininum is 1.")]
+    )
+
+    guests = IntegerField(
+        'Number of Guests',
+        validators=[InputRequired(), NumberRange(min=1, message="Mininum is 1.")]
+    )

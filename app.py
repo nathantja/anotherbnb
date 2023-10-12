@@ -8,9 +8,15 @@ from werkzeug.exceptions import Unauthorized
 from werkzeug.utils import secure_filename
 import uuid
 
-from forms import UserAddForm, CSRFProtectForm, LoginForm, ListingAddForm
-from models import db, connect_db, User, Listing, Image
-# Reservation, Message
+from forms import (
+    UserAddForm,
+    CSRFProtectForm,
+    LoginForm,
+    ListingAddForm,
+    ReservationAddForm,
+)
+from models import db, connect_db, User, Listing, Image, Reservation
+# Message
 from utils import upload_to_S3, BUCKET_IMG_BASE_URL, validate_image_extensions
 
 load_dotenv()
@@ -226,11 +232,54 @@ def new_listing():
             return redirect(f"/listings/{listing.id}")
 
     else:
-        return render_template("listings-new.html", form=form)
+        return render_template("listing-new.html", form=form)
 
 
-# @app.route('/listings/<int:id>/reserve', methods=['GET', 'POST'])
-# def reserve_listing(id):
+@app.route('/listings/<int:id>/reserve', methods=['GET', 'POST'])
+def request_listing_reservation(id):
+    """Display reservation form or process the request.
+
+    Add new reservation to database, then redirect to ___FIXME:____.
+    If form not valid, present form.
+    """
+
+    if not g.user:
+        flash("Signup or login to make reservation", "warning")
+        return redirect("/")
+
+    listing = Listing.query.get_or_404(id)
+
+    if listing.user_id == g.user.id:
+        flash("You cannot make a reservation for your own listing", "warning")
+        return redirect("/")
+
+    form = ReservationAddForm()
+
+    if form.validate_on_submit():
+        start_date = form.start_date.data
+        start_time = form.start_time.data
+        hours = form.hours.data
+        guests = form.guests.data
+
+        reservation = Reservation(
+            user_id=g.user.id,
+            listing_id=listing.id,
+            start_date=start_date,
+            start_time=start_time,
+            hours=hours,
+            guests=guests
+        )
+
+        db.session.add(reservation)
+        db.session.commit()
+
+        flash("Successfully requested", "success")
+        return redirect(f"/listings/{listing.id}")
+
+    else:
+        return render_template("listing-reservation.html",
+                               form=form,
+                               listing=listing)
 
 
 

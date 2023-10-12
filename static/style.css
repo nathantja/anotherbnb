@@ -6,3 +6,12 @@
 .listing-images {
   max-width: 150px;
 }
+
+.reservation-form {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.reservation-button {
+  margin-top: 20px;
+}
