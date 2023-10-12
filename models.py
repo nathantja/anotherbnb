@@ -26,6 +26,7 @@ def connect_db(app):
 # reservations M:1 listings
 # reservations M:1 users
 
+
 ### MESSAGES ###################################################################
 
 class Message(db.Model):
@@ -48,6 +49,11 @@ class Message(db.Model):
         db.Integer,
         db.ForeignKey('users.id', ondelete='CASCADE'),
         nullable=False
+    )
+
+    subject = db.Column(
+        db.String(100),
+        nullable=False,
     )
 
     message = db.Column(
@@ -93,15 +99,7 @@ class User(db.Model):
         nullable=False,
     )
 
-    # RELATIONSHIPS
-    listings = db.relationship(
-        'Listing',
-        backref='user')
-
-    reservations = db.relationship(
-        'Listing',
-        secondary='reservations',
-        backref='reserved_by')
+    # RELATIONSHIP
 
     sent = db.relationship(
         'User',
@@ -289,4 +287,4 @@ class Reservation(db.Model):
 
     # RELATIONSHIPS
     listing = db.relationship('Listing', backref='reservations')
-    user = db.relationship('User')
+    user = db.relationship('User', backref='reserved_by')

@@ -14,9 +14,9 @@ from forms import (
     LoginForm,
     ListingAddForm,
     ReservationAddForm,
+    MessageComposeForm,
 )
-from models import db, connect_db, User, Listing, Image, Reservation
-# Message
+from models import db, connect_db, User, Listing, Image, Reservation, Message
 from utils import upload_to_S3, BUCKET_IMG_BASE_URL, validate_image_extensions
 
 load_dotenv()
@@ -191,6 +191,10 @@ def new_listing():
     If form not valid, present form.
     """
 
+    if not g.user:
+        flash("Signup or login to add listing", "warning")
+        return redirect("/")
+
     form = ListingAddForm()
 
     if form.validate_on_submit():
@@ -351,6 +355,43 @@ def deny_reservation(id):
     db.session.commit()
 
     return redirect("/reservations/manage")
+
+
+### Messages ###################################################################
+
+@app.route('/messages/compose', methods=['GET', 'POST'])
+def compose_message():
+    """Show form to compose message or process the message."""
+
+    if not g.user:
+        flash("Signup or login to send message", "warning")
+        return redirect("/")
+
+    form = MessageComposeForm()
+
+    if form.validate_on_submit():
+        recipient = User.query.filter(
+            User.username == form.recipient_username.data).first()
+
+        if not recipient:
+            flash("Username does not exist", "danger")
+            return redirect("/messages/compose")
+
+        message = Message(
+            sender_user_id=g.user.id,
+            recipient_user_id=recipient.id,
+            subject=form.subject.data,
+            message=form.message.data
+        )
+
+        db.session.add(message)
+        db.session.commit()
+
+        flash("Message sent successfully", "success")
+        return redirect("/messages/compose")
+
+    else:
+        return render_template("messages-compose.html", form=form)
 
 
 ### Homepage (Redirect) ########################################################

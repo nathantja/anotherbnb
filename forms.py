@@ -121,3 +121,22 @@ class ReservationAddForm(FlaskForm):
         'Number of Guests',
         validators=[InputRequired(), NumberRange(min=1, message="Mininum is 1.")]
     )
+
+
+class MessageComposeForm(FlaskForm):
+    """Send a message to another user."""
+
+    recipient_username = StringField(
+        'Recipient Username',
+        validators=[InputRequired(), Length(max=30)]
+    )
+
+    subject = StringField(
+        'Subject',
+        validators=[InputRequired(), Length(max=100)]
+    )
+
+    message = TextAreaField(
+        'Message',
+        validators=[InputRequired(), Length(max=10000)]
+    )

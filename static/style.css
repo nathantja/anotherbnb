@@ -6,15 +6,15 @@
   max-width: 150px;
 }
 
-.reserve-form {
+.user-form {
   margin-top: 50px;
 }
 
-.reserve-buttons {
+.form-buttons {
   margin-top: 20px;
   margin-bottom: 20px;
 }
 
-.reserve-inputs {
-  margin-top: px;
+.form-inputs {
+  margin-top: 10px;
 }
