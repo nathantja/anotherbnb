@@ -1,9 +1,22 @@
 from flask_wtf import FlaskForm
 
-from wtforms import StringField, PasswordField, TextAreaField, SelectField, MultipleFileField
-from wtforms.validators import InputRequired, Length, Email, Optional
-from flask_wtf.file import FileAllowed
+from wtforms import (
+    StringField,
+    PasswordField,
+    TextAreaField,
+    SelectField,
+    MultipleFileField,
+    IntegerField,
+    DecimalField
+    )
 
+from wtforms.validators import (
+    InputRequired,
+    Length,
+    Email,
+    Optional,
+    NumberRange,
+    )
 
 class UserAddForm(FlaskForm):
     """User signup form."""
@@ -43,7 +56,7 @@ class CSRFProtectForm(FlaskForm):
 
 
 class ListingAddForm(FlaskForm):
-    """Add a listing. """
+    """Add a listing."""
 
     title = StringField(
         'Title',
@@ -56,8 +69,23 @@ class ListingAddForm(FlaskForm):
 
     images = MultipleFileField(
         'Upload images',
-        validators=[InputRequired(),
-                    FileAllowed(['png', 'jpg', 'jpeg'], 'Only png, jpg, & jpeg supported.')]
+        validators=[InputRequired()]
+    )
+
+    sq_ft = IntegerField(
+        'Square ft',
+        validators=[InputRequired(), NumberRange(min=1, message="Mininum is 1.")]
+    )
+
+    max_guests = IntegerField(
+        'Maximum number of guests',
+        validators=[InputRequired(), NumberRange(min=1, message="Mininum is 1.")]
+    )
+
+    hourly_rate = DecimalField(
+        "Hourly rate",
+        places=2,
+        validators=[InputRequired(), NumberRange(min=1, message="Mininum is 1.")]
     )
 
     status = SelectField(
@@ -67,3 +95,11 @@ class ListingAddForm(FlaskForm):
                  ('reserved', 'Reserved')],
         validators=[InputRequired()]
     )
+
+
+
+class ReservationAddForm(FlaskForm):
+    """Request a reservation for a specific listing."""
+
+
+

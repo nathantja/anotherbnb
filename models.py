@@ -174,6 +174,24 @@ class Listing(db.Model):
         default="available"
     )
 
+    sq_ft = db.Column(
+        db.Integer,
+        db.CheckConstraint('sq_ft > 0'),
+        nullable=False
+    )
+
+    max_guests = db.Column(
+        db.Integer,
+        db.CheckConstraint('max_guests > 0'),
+        nullable=False
+    )
+
+    hourly_rate = db.Column(
+        db.Numeric(10,2),
+        db.CheckConstraint('hourly_rate > 0'),
+        nullable=False
+    )
+
     # RELATIONSHIP
     images = db.relationship('Image', backref='listing')
 
@@ -222,10 +240,6 @@ class Reservation(db.Model):
 
     __tablename__ = 'reservations'
 
-    __table_args__ = (
-        db.CheckConstraint('end_date >= start_date'),
-    )
-
     id = db.Column(
         db.Integer,
         primary_key=True
@@ -248,8 +262,15 @@ class Reservation(db.Model):
         nullable=False
     )
 
-    end_date = db.Column(
-        db.DateTime,
+    hours = db.Column(
+        db.Integer,
+        db.CheckConstraint('hours > 0'),
+        nullable=False
+    )
+
+    guests = db.Column(
+        db.Integer,
+        db.CheckConstraint('guests > 0'),
         nullable=False
     )
 

@@ -2,18 +2,23 @@
 
 
 {% block content %}
-<h1>LISTING</h1>
 
-<h2>{{ listing.title }}</h2>
-<h3>Host: {{ listing.user.username }}</h3>
-<h4>Description: {{ listing.description }}</h4>
-<h5>Status: {{ listing.status }}</h5>
+<h1>{{ listing.title }}</h1>
+<p><b>Host:</b> {{ listing.user.username }}</p>
+<p><b>Area (Square Ft):</b> {{ listing.sq_ft}}</p>
+<p><b>Max Number of Guests:</b> {{ listing.max_guests }}</p>
+<p><b>Hourly Rate:</b> {{ listing.hourly_rate }}</p>
+<p><b>Description:</b> {{ listing.description }}</p>
+<p><b>Status:</b> {{ listing.status }}</p>
+
 <a href="/listings/{{ listing.id }}/reserve" class="btn btn-primary">Request Reservation</a>
 
-{% for image in listing.images %}
-<img src="{{ image.url }}" alt="{{ image.original_filename }}">
 
-{% endfor %}
+<div>
+{% for image in listing.images %}
+  <img class="listing-images" src="{{ image.url }}" alt="{{ image.original_filename }}">
+  {% endfor %}
+</div>
 
 
 {% endblock %}

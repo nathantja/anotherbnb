@@ -11,7 +11,7 @@ import uuid
 from forms import UserAddForm, CSRFProtectForm, LoginForm, ListingAddForm
 from models import db, connect_db, User, Listing, Image
 # Reservation, Message
-from utils import uploadToS3, BUCKET_IMG_BASE_URL
+from utils import upload_to_S3, BUCKET_IMG_BASE_URL, validate_image_extensions
 
 load_dotenv()
 
@@ -188,36 +188,50 @@ def new_listing():
     form = ListingAddForm()
 
     if form.validate_on_submit():
-        listing = Listing(
-            user_id=g.user.id,
-            title=form.title.data,
-            description=form.description.data,
-            status=form.status.data
-        )
-        db.session.add(listing)
-        db.session.commit()
 
-        for image in form.images.data:
-            original_filename = secure_filename(image.filename)
-            extension = original_filename.rsplit(".", 1)[1].lower()
-            uuid_filename = uuid.uuid4().hex + "." + extension
-            uploadToS3(image, uuid_filename)
+        if not validate_image_extensions(form.images.data):
+            flash("Only png, jpg, & jpeg extensions supported.", "danger")
+            return redirect("/listings/new")
 
-            db_image = Image(
-                listing_id=listing.id,
-                original_filename=original_filename,
-                filename=uuid_filename,
-                url=f"{BUCKET_IMG_BASE_URL}/{uuid_filename}"
+        else:
+            listing = Listing(
+                user_id=g.user.id,
+                title=form.title.data,
+                description=form.description.data,
+                sq_ft=form.sq_ft.data,
+                max_guests=form.max_guests.data,
+                hourly_rate=form.hourly_rate.data,
+                status=form.status.data
             )
-
-            db.session.add(db_image)
+            db.session.add(listing)
             db.session.commit()
 
-        flash("Successfully added listing", "success")
-        return redirect(f"/listings/{listing.id}")
+            for image in form.images.data:
+                original_filename = secure_filename(image.filename)
+                extension = original_filename.rsplit(".", 1)[1].lower()
+                uuid_filename = uuid.uuid4().hex + "." + extension
+                upload_to_S3(image, uuid_filename)
+
+                db_image = Image(
+                    listing_id=listing.id,
+                    original_filename=original_filename,
+                    filename=uuid_filename,
+                    url=f"{BUCKET_IMG_BASE_URL}/{uuid_filename}"
+                )
+
+                db.session.add(db_image)
+                db.session.commit()
+
+            flash("Successfully added listing", "success")
+            return redirect(f"/listings/{listing.id}")
 
     else:
         return render_template("listings-new.html", form=form)
+
+
+# @app.route('/listings/<int:id>/reserve', methods=['GET', 'POST'])
+# def reserve_listing(id):
+
 
 
 ### Homepage (Redirect) ########################################################
