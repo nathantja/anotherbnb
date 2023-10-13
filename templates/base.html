@@ -22,6 +22,7 @@
 
       <ul class="nav navbar-nav navbar-right">
         {% if not g.user %}
+        <li><a class="btn btn-link text-dark text-decoration-none" href="/listings">Listings</a></li>
         <li><a class="btn btn-link text-dark text-decoration-none" href="/signup">Signup</a></li>
         <li><a class="btn btn-link text-dark text-decoration-none" href="/login">Login</a></li>
         {% else %}

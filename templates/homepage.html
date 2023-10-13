@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import received_messages_card %}
+
+{% block content %}
+
+<div class="row justify-content-md-center">
+  <div class="col-md-7 col-lg-5">
+
+    <h2 class="mt-4">Welcome!</h2>
+
+    <p class="mt-4">Here at <b>Anotherbnb™</b>, we had a vision of creating the bestest and most unique property sharing platform to
+      ever exist. We foster community by exploiting hosts with exorbitant fees and selling all of our user information - all in the name of capitalism.</p>
+
+    {% if not g.user %}
+    <p>View listings as a guest - signup or login below for cooler features. </p>
+
+    <div>
+      <a class="btn btn-primary" href="/signup">Signup</a>
+      <a class="btn btn-secondary" href="/login">Login</a>
+    </div>
+
+    {% endif %}
+
+  </div>
+</div>
+
+{% endblock %}
