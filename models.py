@@ -26,6 +26,66 @@ def connect_db(app):
 # reservations M:1 listings
 # reservations M:1 users
 
+### USERS ######################################################################
+
+class User(db.Model):
+    """User in the system."""
+
+    __tablename__ = 'users'
+
+    def __repr__(self):
+        return f"<User #{self.id}: {self.username}, {self.email}>"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    username = db.Column(
+        db.String(30),
+        nullable=False,
+        unique=True,
+    )
+
+    email = db.Column(
+        db.String(50),
+        nullable=False,
+    )
+
+    password = db.Column(
+        db.String(100),
+        nullable=False,
+    )
+
+    @classmethod
+    def signup(cls, username, email, password):
+        """Sign up user - hashes password, adds user to database, and returns
+        user."""
+
+        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+        user = User(
+            username=username,
+            email=email,
+            password=hashed_pwd
+        )
+
+        db.session.add(user)
+        return user
+
+    @classmethod
+    def authenticate(cls, username, password):
+        """Find user with `username` and check password via bcrypt hash.
+        returns user object if authenticated OR False."""
+
+        user = cls.query.filter_by(username=username).one_or_none()
+
+        if user:
+            is_auth = bcrypt.check_password_hash(user.password, password)
+            if is_auth:
+                return user
+
+        return False
+
 
 ### MESSAGES ###################################################################
 
@@ -67,76 +127,9 @@ class Message(db.Model):
         default=datetime.utcnow()
     )
 
-
-### USERS ######################################################################
-
-class User(db.Model):
-    """User in the system."""
-
-    __tablename__ = 'users'
-
-    def __repr__(self):
-        return f"<User #{self.id}: {self.username}, {self.email}>"
-
-    id = db.Column(
-        db.Integer,
-        primary_key=True
-    )
-
-    username = db.Column(
-        db.String(30),
-        nullable=False,
-        unique=True,
-    )
-
-    email = db.Column(
-        db.String(50),
-        nullable=False,
-    )
-
-    password = db.Column(
-        db.String(100),
-        nullable=False,
-    )
-
     # RELATIONSHIP
-
-    sent = db.relationship(
-        'User',
-        secondary='messages',
-        primaryjoin=(id == Message.sender_user_id),
-        secondaryjoin=(id == Message.recipient_user_id),
-        backref='received')
-
-
-    @classmethod
-    def signup(cls, username, email, password):
-        """Sign up user - hashes password, adds user to database, and returns
-        user."""
-
-        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
-        user = User(
-            username=username,
-            email=email,
-            password=hashed_pwd
-        )
-
-        db.session.add(user)
-        return user
-
-    @classmethod
-    def authenticate(cls, username, password):
-        """Find user with `username` and check password via bcrypt hash.
-        returns user object if authenticated OR False."""
-
-        user = cls.query.filter_by(username=username).one_or_none()
-
-        if user:
-            is_auth = bcrypt.check_password_hash(user.password, password)
-            if is_auth:
-                return user
-
-        return False
+    sender = db.relationship('User', primaryjoin=(User.id == sender_user_id))
+    recipient = db.relationship('User', primaryjoin=(User.id == recipient_user_id))
 
 
 ### LISTINGS ###################################################################
@@ -194,6 +187,7 @@ class Listing(db.Model):
 
     # RELATIONSHIP
     images = db.relationship('Image', backref='listing')
+    user = db.relationship('User')
 
 
 

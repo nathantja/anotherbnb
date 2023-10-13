@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import received_messages_card %}
+
+{% block content %}
+
+<div class="row justify-content-md-center">
+  <div class="col-md-8 col-lg-8">
+
+    <h2>All Messages</h2>
+
+    {% for message in messages %}
+    {{ received_messages_card(message) }}
+    {% endfor %}
+
+
+  </div>
+</div>
+
+
+
+{% endblock %}

@@ -6,6 +6,8 @@ Wishlist:
 - library for authentication
 - image carousel on homepage/listings
 
+- horizontal card instead of kitchen sink https://getbootstrap.com/docs/5.0/components/card/#horizontal
+
 MODELS
 - users table additions - firstname, lastname, bio
 - reservations table - check to see if reservations overlap

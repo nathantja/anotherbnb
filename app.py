@@ -296,8 +296,10 @@ def my_reservations():
         flash("Signup or login to see reservations", "warning")
         return redirect("/")
 
-    reservations = Reservation.query.filter(
-        Reservation.user_id == g.user.id).all()
+    reservations = (Reservation
+                    .query
+                    .filter(Reservation.user_id == g.user.id)
+                    .all())
 
     return render_template("reservations-me.html", reservations=reservations)
 
@@ -367,7 +369,8 @@ def compose_message():
         flash("Signup or login to send message", "warning")
         return redirect("/")
 
-    form = MessageComposeForm()
+
+    form = MessageComposeForm(recipient_username='test')
 
     if form.validate_on_submit():
         recipient = User.query.filter(
@@ -392,6 +395,20 @@ def compose_message():
 
     else:
         return render_template("messages-compose.html", form=form)
+
+
+@app.get('/messages/inbox')
+def messages_inbox():
+    """View all messages received."""
+
+    if not g.user:
+        flash("Signup or login to view messages", "warning")
+        return redirect("/")
+
+    messages = Message.query.filter(Message.recipient_user_id==g.user.id).all()
+
+    return render_template("messages-inbox.html", messages=messages)
+
 
 
 ### Homepage (Redirect) ########################################################

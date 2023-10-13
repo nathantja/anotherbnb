@@ -67,7 +67,20 @@
   <div class="card-body">
     <a href="/listings/{{ listing.id }}" class="card-link">View Details</a>
     <a href="/listings/{{ listing.id }}/reserve" class="card-link">Reserve</a>
+    <a href="/messages/compose" class="card-link">Message Host</a>
   </div>
   {% endif %}
+</div>
+{% endmacro %}
+
+
+{% macro received_messages_card(message) %}
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title"><b>Subject: </b>{{ message.subject }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">From: {{ message.sender.username }}</h6>
+    <p class="card-text">{{ message.message }}</p>
+    <a href="#" class="card-link">Reply {{message.sender.username}}</a>
+  </div>
 </div>
 {% endmacro %}
