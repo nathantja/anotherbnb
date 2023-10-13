@@ -1,13 +1,11 @@
 import boto3
 
-
 BUCKET_NAME = "r33anotherbnb"
 AWS_REGION = "us-west-1"
 BUCKET_IMG_BASE_URL = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com"
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 
 s3 = boto3.resource('s3')
-
 
 
 def upload_to_S3(file, filename):

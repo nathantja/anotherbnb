@@ -221,7 +221,6 @@ def new_listing():
                 sq_ft=form.sq_ft.data,
                 max_guests=form.max_guests.data,
                 hourly_rate=form.hourly_rate.data,
-                status=form.status.data
             )
             db.session.add(listing)
             db.session.commit()
@@ -351,7 +350,7 @@ def approve_reservation(id):
     return redirect("/reservations/manage")
 
 
-@app.post('/reservations/<int:id>/approve')
+@app.post('/reservations/<int:id>/deny')
 def deny_reservation(id):
     """Set status for reservation to 'denied'."""
 

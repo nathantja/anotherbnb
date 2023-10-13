@@ -20,12 +20,12 @@
 {% macro reservation_card(reservation) %}
 <div class="card" style="width: 25rem;">
   <div class="card-body">
-    <h5 class="card-title">{{ reservation.listing.title }}</h5>
+    <h5 class="card-title"><a href="/listings/{{ reservation.listing.id }}">{{ reservation.listing.title }}</a></h5>
     <h6 class="card-subtitle mb-2 text-muted">Host: {{ reservation.listing.user.username }}</h6>
-    <p class="card-text"><b>Hours:</b> {{ reservation.hours }}</p>
-    <p class="card-text"><b>Guests:</b> {{ reservation.guests }}</p>
-    <p class="card-text"><b>Start Time:</b> {{ reservation.start_time }}</p>
     <p class="card-text"><b>Date:</b> {{ reservation.start_date }}</p>
+    <p class="card-text"><b>Start Time:</b> {{ reservation.start_time }}</p>
+    <p class="card-text"><b>Guests:</b> {{ reservation.guests }}</p>
+    <p class="card-text"><b>Hours:</b> {{ reservation.hours }}</p>
   </div>
 </div>
 {% endmacro %}
@@ -36,10 +36,10 @@
   <div class="card-body">
     <h5 class="card-title">{{ reservation.user.username }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">Listing: {{ reservation.listing.title }}</h6>
-    <p class="card-text"><b>Hours:</b> {{ reservation.hours }}</p>
-    <p class="card-text"><b>Guests:</b> {{ reservation.guests }}</p>
-    <p class="card-text"><b>Start Time:</b> {{ reservation.start_time }}</p>
     <p class="card-text"><b>Date:</b> {{ reservation.start_date }}</p>
+    <p class="card-text"><b>Start Time:</b> {{ reservation.start_time }}</p>
+    <p class="card-text"><b>Guests:</b> {{ reservation.guests }}</p>
+    <p class="card-text"><b>Hours:</b> {{ reservation.hours }}</p>
 
     {% if reservation.status != 'requested'%}
     <p class="card-text"><b>Status:</b> {{ reservation.status.capitalize() }}</p>

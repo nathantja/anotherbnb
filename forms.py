@@ -4,7 +4,6 @@ from wtforms import (
     StringField,
     PasswordField,
     TextAreaField,
-    SelectField,
     MultipleFileField,
     IntegerField,
     DecimalField,
@@ -88,14 +87,6 @@ class ListingAddForm(FlaskForm):
         "Hourly rate",
         places=2,
         validators=[InputRequired(), NumberRange(min=1, message="Mininum is 1.")]
-    )
-
-    status = SelectField(
-        'Status',
-        choices=[('available', "Available"),
-                 ('pending', 'Pending'),
-                 ('reserved', 'Reserved')],
-        validators=[InputRequired()]
     )
 
 
