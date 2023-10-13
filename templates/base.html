@@ -30,7 +30,8 @@
         <li><a class="btn btn-link text-dark text-decoration-none" href="/messages/compose">Send Message</a></li>
         <li><a class="btn btn-link text-dark text-decoration-none" href="/messages/sent">Sent Messages</a></li>
         <li><a class="btn btn-link text-dark text-decoration-none" href="/reservations/me">My Reservations</a></li>
-        <li><a class="btn btn-link text-dark text-decoration-none" href="/reservations/manage">Manage Reservations</a></li>
+        <li><a class="btn btn-link text-dark text-decoration-none" href="/reservations/manage">Manage Reservations</a>
+        </li>
         <form action="/logout" method="POST">
           {{ g.csrf_form.hidden_tag() }}
           <li><button class="btn btn-link text-danger text-decoration-none">Logout {{ g.user.username }}</button></li>
@@ -40,9 +41,6 @@
       </ul>
     </div>
   </nav>
-
-
-
 
   <div class="container">
     {% for category, message in get_flashed_messages(with_categories=True) %}

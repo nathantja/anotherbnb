@@ -3,21 +3,21 @@
 
 {% block content %}
 
-<div class="row justify-content-md-center">
-  <div class="col-md-7 col-lg-5">
+<div>
+  <div class="col-md-10 col-lg-12">
 
-    <h1>{{ listing.title }}</h1>
+    <h1 class="mt-4">{{ listing.title }}</h1>
     {{ listing_details_only(listing) }}
 
     <a href="/listings/{{ listing.id }}/reserve" class="btn btn-primary">Reserve</a>
     <a href="/messages/compose?recipient_username={{ listing.user.username }}&subject={{ listing.title }}"
-    class="btn btn-dark">Message Host</a>
+    class="btn btn-light border">Message Host</a>
     <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
 
 
-    <div>
+    <div class="mt-4">
       {% for image in listing.images %}
-      <img class="listing-images" src="{{ image.url }}" alt="{{ image.original_filename }}">
+      <img class="listing-images m-1" src="{{ image.url }}" alt="{{ image.original_filename }}">
       {% endfor %}
     </div>
 

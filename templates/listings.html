@@ -3,20 +3,25 @@
 {% from 'macros.html' import search_listing %}
 
 
-
 {% block content %}
 
 {{ search_listing(q) }}
-<div class="row justify-content-md-center">
-  <div class="col-md-7 col-lg-5">
-    <h1>LISTINGS (LOGGED IN)</h1>
-    <a href="/listings/new" class="btn btn-primary">Add Listing</a>
 
-    <!-- LISTINGS OVERVIEW -->
+{% if g.user %}
+<a href="/listings/new" class="btn btn-primary">Add Listing</a>
+{% endif %}
+
+<div>
+  <div class="col-md-10 col-lg-12 d-flex flex-wrap justify-content-center">
+
+    {% if not listings %}
+    <h2>No results found...</h2>
+    {% endif %}
+
     {% for listing in listings %}
     {{ listing_card(listing) }}
     {% endfor %}
-    <!-- END LISTINGS -->
+
   </div>
 </div>
 

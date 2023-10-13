@@ -3,9 +3,8 @@
 
 {% block content %}
 <div class="row justify-content-md-center">
-  <div class="col-md-7 col-lg-5">
-    <h1>Reserve '{{ listing.title }}'</h1>
-
+  <div class="col-md-12 col-lg-7">
+    <h1 class="mt-4">Reserve '{{ listing.title }}'</h1>
 
     <form method="POST" id="user_form" enctype="multipart/form-data" class="user-form">
       {{ form.hidden_tag() }}
@@ -27,7 +26,7 @@
     </form>
 
     <div>
-      <h4><b>Listing Details</b></h4>
+      <h4 class="mt-5"><b>Listing Details</b></h4>
       {{ listing_details_only(listing) }}
     </div>
 

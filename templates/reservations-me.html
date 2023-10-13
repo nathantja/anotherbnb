@@ -2,29 +2,26 @@
 {% from 'macros.html' import reservation_card %}
 
 {% block content %}
-
-
 <div class="row justify-content-md-center">
-  <div class="col-md-8 col-lg-8">
+  <div class="col-md-7 col-lg-5">
 
-    <h1>My Reservations</h1>
+    <h1 class="mt-4">My Reservations</h1>
 
-    <h2>Pending</h2>
-
+    <h2 class="mt-4 mb-2 text-primary">Pending</h2>
     {% for reservation in reservations %}
     {% if reservation.status == 'requested' %}
     {{ reservation_card(reservation) }}
     {% endif %}
     {% endfor %}
 
-    <h2>Approved</h2>
+    <h2 class="mt-4 mb-2 text-success">Approved</h2>
     {% for reservation in reservations %}
     {% if reservation.status == 'approved' %}
     {{ reservation_card(reservation) }}
     {% endif %}
     {% endfor %}
 
-    <h2>Denied</h2>
+    <h2 class="mt-4 mb-2 text-danger">Denied</h2>
     {% for reservation in reservations %}
     {% if reservation.status == 'denied' %}
     {{ reservation_card(reservation) }}

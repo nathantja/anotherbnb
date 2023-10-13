@@ -1,6 +1,6 @@
 {% macro search_listing(value) %}
 <form method="GET">
-  <div class="input-group w-50 mx-auto">
+  <div class="input-group w-50 mx-auto mt-4 mb-4">
     <input class="form-control" type="text" name="q" value="{{ value }}" placeholder="title or description...">
     <button class="btn btn-light border">Search</button>
   </div>
@@ -18,7 +18,7 @@
 
 
 {% macro reservation_card(reservation) %}
-<div class="card" style="width: 25rem;">
+<div class="card mt-4 mb-4" style="width: 24rem;">
   <div class="card-body">
     <h5 class="card-title"><a href="/listings/{{ reservation.listing.id }}">{{ reservation.listing.title }}</a></h5>
     <h6 class="card-subtitle mb-2 text-muted">Host: {{ reservation.listing.user.username }}</h6>
@@ -32,7 +32,7 @@
 
 
 {% macro reservation_approval_card(reservation) %}
-<div class="card" style="width: 25rem;">
+<div class="card mt-4 mb-4" style="width: 24rem;">
   <div class="card-body">
     <h5 class="card-title">{{ reservation.user.username }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">Listing: {{ reservation.listing.title }}</h6>
@@ -74,7 +74,7 @@
   </ul>
   {% if g.user %}
   <div class="card-body">
-    <a href="/listings/{{ listing.id }}" class="card-link">View Details</a>
+    <a href="/listings/{{ listing.id }}" class="card-link">Details</a>
     <a href="/listings/{{ listing.id }}/reserve" class="card-link">Reserve</a>
     <a href="/messages/compose?recipient_username={{ listing.user.username }}&subject={{ listing.title }}"
       class="card-link">Message Host</a>
@@ -85,28 +85,28 @@
 
 
 {% macro received_messages_card(message) %}
-<div class="card" style="width: 24rem;">
+<div class="card mt-4 mb-4" style="width: 24rem;">
   <div class="card-body">
     <h5 class="card-title"><b>Subject: </b>{{ message.subject }}</h5>
     <h6 class="card-subtitle mb-1 text-muted">Sent At: {{ message.timestamp }}</h6>
     <h6 class="card-subtitle mb-2 text-muted">From: {{ message.sender.username }}</h6>
     <p class="card-text">{{ message.message }}</p>
     <a href="/messages/compose?recipient_username={{ message.sender.username }}&subject=Re:%20{{ message.subject }}"
-      class="card-link">Reply {{message.sender.username}}</a>
+      class="card-link text-decoration-none">Reply {{message.sender.username}}</a>
   </div>
 </div>
 {% endmacro %}
 
 
 {% macro sent_messages_card(message) %}
-<div class="card" style="width: 24rem;">
+<div class="card mt-4 mb-4" style="width: 24rem;">
   <div class="card-body">
     <h5 class="card-title"><b>Subject: </b>{{ message.subject }}</h5>
     <h6 class="card-subtitle mb-1 text-muted">Sent At: {{ message.timestamp }}</h6>
     <h6 class="card-subtitle mb-2 text-muted">To: {{ message.recipient.username }}</h6>
     <p class="card-text">{{ message.message }}</p>
     <a href="/messages/compose?recipient_username={{ message.recipient.username }}&subject=Re:%20{{ message.subject }}"
-      class="card-link">Followup</a>
+      class="card-link text-decoration-none">Followup</a>
   </div>
 </div>
 {% endmacro %}

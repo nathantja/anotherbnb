@@ -4,18 +4,15 @@
 {% block content %}
 
 <div class="row justify-content-md-center">
-  <div class="col-md-8 col-lg-8">
+  <div class="col-md-7 col-lg-5">
 
-    <h2>Sent Messages</h2>
+    <h2 class="mt-4">Sent Messages</h2>
 
     {% for message in messages %}
     {{ sent_messages_card(message) }}
     {% endfor %}
 
-
   </div>
 </div>
-
-
 
 {% endblock %}
