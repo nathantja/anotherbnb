@@ -225,6 +225,7 @@ def new_listing():
             db.session.add(listing)
             db.session.commit()
 
+            # TODO: logic in views
             for image in form.images.data:
                 original_filename = secure_filename(image.filename)
                 extension = original_filename.rsplit(".", 1)[1].lower()
