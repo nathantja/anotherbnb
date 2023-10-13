@@ -14,7 +14,6 @@
 <p><b>Max Number of Guests:</b> {{ listing.max_guests }}</p>
 <p><b>Hourly Rate:</b> ${{ listing.hourly_rate }}</p>
 <p><b>Description:</b> {{ listing.description }}</p>
-<p><b>Status:</b> {{ listing.status.capitalize() }}</p>
 {% endmacro %}
 
 
@@ -86,13 +85,28 @@
 
 
 {% macro received_messages_card(message) %}
-<div class="card" style="width: 18rem;">
+<div class="card" style="width: 24rem;">
   <div class="card-body">
     <h5 class="card-title"><b>Subject: </b>{{ message.subject }}</h5>
+    <h6 class="card-subtitle mb-1 text-muted">Sent At: {{ message.timestamp }}</h6>
     <h6 class="card-subtitle mb-2 text-muted">From: {{ message.sender.username }}</h6>
     <p class="card-text">{{ message.message }}</p>
     <a href="/messages/compose?recipient_username={{ message.sender.username }}&subject=Re:%20{{ message.subject }}"
       class="card-link">Reply {{message.sender.username}}</a>
+  </div>
+</div>
+{% endmacro %}
+
+
+{% macro sent_messages_card(message) %}
+<div class="card" style="width: 24rem;">
+  <div class="card-body">
+    <h5 class="card-title"><b>Subject: </b>{{ message.subject }}</h5>
+    <h6 class="card-subtitle mb-1 text-muted">Sent At: {{ message.timestamp }}</h6>
+    <h6 class="card-subtitle mb-2 text-muted">To: {{ message.recipient.username }}</h6>
+    <p class="card-text">{{ message.message }}</p>
+    <a href="/messages/compose?recipient_username={{ message.recipient.username }}&subject=Re:%20{{ message.subject }}"
+      class="card-link">Followup</a>
   </div>
 </div>
 {% endmacro %}

@@ -161,12 +161,6 @@ class Listing(db.Model):
         default=""
     )
 
-    status = db.Column(
-        db.String(30),
-        nullable=False,
-        default="available"
-    )
-
     sq_ft = db.Column(
         db.Integer,
         db.CheckConstraint('sq_ft > 0'),

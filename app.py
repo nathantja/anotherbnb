@@ -427,6 +427,20 @@ def messages_inbox():
     return render_template("messages-inbox.html", messages=messages)
 
 
+@app.get('/messages/sent')
+def messages_sent():
+    """View all messages sent."""
+
+    if not g.user:
+        flash("Signup or login to view messages", "warning")
+        return redirect("/")
+
+    messages = Message.query.filter(Message.sender_user_id==g.user.id).all()
+
+    return render_template("messages-sent.html", messages=messages)
+
+
+
 
 ### Homepage (Redirect) ########################################################
 
