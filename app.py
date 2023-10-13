@@ -445,9 +445,6 @@ def messages_sent():
 
 @app.get('/')
 def homepage():
-    """Landing page.
-
-    Renders guest homepage and logged in homepage.
-    """
+    """Landing page."""
 
     return render_template("homepage.html")
