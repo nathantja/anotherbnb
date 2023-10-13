@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% from 'macros.html' import listing_card %}
+{% from 'macros.html' import search_listing %}
+
+
 
 {% block content %}
+
+{{ search_listing(q) }}
 <div class="row justify-content-md-center">
   <div class="col-md-7 col-lg-5">
     <h1>LISTINGS (LOGGED IN)</h1>

@@ -1,3 +1,13 @@
+{% macro search_listing(value) %}
+<form method="GET">
+  <div class="input-group w-50 mx-auto">
+    <input class="form-control" type="text" name="q" value="{{ value }}" placeholder="title or description...">
+    <button class="btn btn-light border">Search</button>
+  </div>
+</form>
+{% endmacro %}
+
+
 {% macro listing_details_only(listing) %}
 <p><b>Host:</b> {{ listing.user.username }}</p>
 <p><b>Area:</b> {{ listing.sq_ft}} ft²</p>
@@ -67,7 +77,8 @@
   <div class="card-body">
     <a href="/listings/{{ listing.id }}" class="card-link">View Details</a>
     <a href="/listings/{{ listing.id }}/reserve" class="card-link">Reserve</a>
-    <a href="/messages/compose" class="card-link">Message Host</a>
+    <a href="/messages/compose?recipient_username={{ listing.user.username }}&subject={{ listing.title }}"
+      class="card-link">Message Host</a>
   </div>
   {% endif %}
 </div>
@@ -80,7 +91,8 @@
     <h5 class="card-title"><b>Subject: </b>{{ message.subject }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">From: {{ message.sender.username }}</h6>
     <p class="card-text">{{ message.message }}</p>
-    <a href="#" class="card-link">Reply {{message.sender.username}}</a>
+    <a href="/messages/compose?recipient_username={{ message.sender.username }}&subject=Re:%20{{ message.subject }}"
+      class="card-link">Reply {{message.sender.username}}</a>
   </div>
 </div>
 {% endmacro %}

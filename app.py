@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-from flask import Flask, session, g, flash, redirect, render_template
+from flask import Flask, session, g, flash, redirect, render_template, request
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import Unauthorized
@@ -162,13 +162,23 @@ def listings():
     Logged In: show UI to interact with listings
     """
 
-    listings = Listing.query.all()
+    q = request.args.get('q', '')
 
-    if g.user:
-        return render_template("listings.html", listings=listings)
+    if q:
+        listings = (Listing
+                    .query
+                    .filter(Listing.title.ilike(f'%{q}%') |
+                            Listing.description.ilike(f'%{q}%'))
+                    .all())
 
     else:
-        return render_template("listings-guest.html", listings=listings)
+        listings = Listing.query.all()
+
+    if g.user:
+        return render_template("listings.html", listings=listings, q=q)
+
+    else:
+        return render_template("listings-guest.html", listings=listings, q=q)
 
 
 @app.get('/listings/<int:id>')
@@ -363,14 +373,21 @@ def deny_reservation(id):
 
 @app.route('/messages/compose', methods=['GET', 'POST'])
 def compose_message():
-    """Show form to compose message or process the message."""
+    """Show form to compose message or process the message.
+
+    Can take 'recipient_username' param in query string to prefill username.
+    Can take 'subject' param in query string to prefill subject.
+    """
 
     if not g.user:
         flash("Signup or login to send message", "warning")
         return redirect("/")
 
+    recipient_username = request.args.get('recipient_username')
+    subject = request.args.get('subject')
 
-    form = MessageComposeForm(recipient_username='test')
+    form = MessageComposeForm(recipient_username=recipient_username,
+                              subject=subject)
 
     if form.validate_on_submit():
         recipient = User.query.filter(
